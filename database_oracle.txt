@@ -1,0 +1,184 @@
+
+cmd
+
+-관리자 로그인
+SQL>system/oracle
+
+-오라클 웹포트 번호 보기
+SQL>select dbms_xdb.gethttpport() from dual;
+DBMS _XDB.GETHTTPPORT()
+----------------------------------
+		8080
+- 오라클 웹포트 번호 바꾸기
+SQL>exec dbms_xdb.sethttpport(9090);
+
+-오라클 웹포트 변경 확인하기
+SQL>select dbms_xdb.gethttpport() from dual;
+DBMS _XDB.GETHTTPPORT()
+-----------------------------------
+		9090
+
+-오라클 서버에 접속
+SQL>sqlplus system/1234(오라클 설치시 암호)
+
+-사용자 계정 scott 만들기
+SQL>create user scott identified by tiger;
+
+-scott 계정에 권한(데이터베이스 접속과 테이블 생성) 부여하기
+SQL>grant connect,resource to scott;
+
+-scott 계정에 권한(뷰 생성) 부여하기
+SQL> grant create view to scott;
+
+-현재 사용자 확인하기
+SQL>show user
+
+-SQL*PLUS 툴에서 빠져나오기
+SQL>exit
+
+-다시 접속
+-sqlplus scott/tiger
+
+-테이블 만들기
+SQL> create table member(
+    name varchar2(10),
+    userid varchar2(10),
+    pwd varchar2(10),
+    email varchar2(20), -- 가변형 글자(주소,이메일)
+    phone char(13), -- 고정된 글자(학번,우편번호)
+    admin number(1) default 0, -- 0:사용자 1:관리자
+    primary key(userid) -- 무결성 제약 조건(Data Integrity Constraint Rule)
+    );
+
+-테이블에 레코드 추가
+insert into member values('이소미','somi','1234','gmd@naver.com','010-2362-5157',0);
+insert into member values('하상호','sang','1234','ha12@naver.com','010-5629-8888',1);
+insert into member values('김윤승','light','1234','yoon1004@naver.com','010-9999-8282',0);
+
+-member 테이블에 저장된 모든 레코드 출력하기
+select * from member;
+
+-영구적 저장
+commit;
+
+-where 조건
+select * from member where userid='somi';
+select * from member where admin=1;
+
+-레코드 변경
+update member set phone='010-1155-5678' where userid='somi';
+
+-레코드 삭제
+delete member where userid='somi';
+
+-확인
+select * from member;
+
+-테이블을 삭제하기 위해서 사용되며, 저장 되어있던 데이터도 함께 삭제된다.
+drop table member;
+
+-컬럼 변경 : alter table
+
+ 컬럼의 데이터 타입,길이 변경 : modify
+alter table board modify title varchar2(20);
+
+ 컬럼명 변경 : rename column
+alter table board rename column auther to author
+
+-테이블 구조 확인
+desc(describe) 테이블 명;
+
+-테이블에 레코드 추가
+insert into board (num,title,author,content)
+values(1,'테스트','홍길동','테스트입니다');
+
+select * from board;
+commit;
+
+-테이블 종류 확인
+select * from tab;
+
+-제약조건(Constraints)
+ primary key : 레코드의 중복을 방지,반드시 유일한 값, NULL 허용 안됨 PK
+ unique : 반드시 유일한 값, NULL 값을 허용 UK
+ not null : 반드시 값을 가져야 한다
+ check : 지정한 조건에 일치하는 데이터 값만 저장 가능 CK
+
+create table customer(
+id number(4) constraint customer_id_pk primary key, -- [제약조건키워드 제약조건이름] 제약조건
+	    [            생략가능          ]
+name varchar2(10) constraint customer_name_nn not null,
+	           [		생략가능            ]
+address varchar2(50) unique,
+age number(3) constraint customer_age_ck check(age>=30)
+);
+
+-시퀀스(Sequence)
+ 값이 자동 증가(객체)
+ 테이블 내의 정수 값을 가지는 기본키에 사용 될 수 있다
+
+create table myboard(
+num number(4) primary key,
+author varchar2(10),
+title varchar2(20),
+content varchar2(100)
+);
+
+-create sequence 시퀀스명칭
+create sequence myboard_seq;
+
+insert into myboard (num,title,author,content)
+values(myboard_seq.nextval,'홍길동','테스트','테스트입니다');
+
+insert into myboard (num,title,author,content)
+values(myboard_seq.nextval,'홍길동2','테스트2','테스트입니다');
+
+select num,author,title from myboard;
+
+drop sequence myboard_seq;
+
+update myboard set num=1 where num=2;
+update myboard set num=2 where num=3;
+
+create table emp(
+emp_id varchar2(10) primary key,
+ename varchar2(10),
+salary number(5),
+depart varchar2(10)
+);
+
+insert into emp values('a111','홍길동',2000,'관리');
+insert into emp values('a222','이순신',4000,'개발');
+insert into emp values('a333','유관순',3500,'영업');
+insert into emp values('a444','강감찬',4500,'개발');
+insert into emp values('a555','이성계',5500,'관리');
+insert into emp values('a666','나신입',1800,'null');
+
+select emp_id,ename from emp;
+select * from emp;
+select ename,salary,salary*12 from emp;
+
+select ename as 사원명 ,salary 월급 from emp;  -- 'as' 명칭바꾸기
+
+select depart from emp;
+
+select distinct depart from emp; -- 중복제거
+
+-where 조건
+select emp_id,ename
+from emp
+where salary >=3000;
+
+SELECT emp_id,ename,salary
+FROM emp
+WHERE emp_id='a111';
+
+-범위 지정
+select emp_id,ename,salary
+from emp
+where salary between 2000 and 4000;
+
+-in : 여러개의 값을 동시에 비교
+select emp_id,ename,salary
+from emp
+where ename in('홍길동','이순신');
