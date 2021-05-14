@@ -1,4 +1,4 @@
-cmd
+cmd로 처음 시작했을때
 
 -관리자 로그인
 SQL>system/oracle
