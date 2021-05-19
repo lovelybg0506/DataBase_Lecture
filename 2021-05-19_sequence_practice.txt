@@ -1,0 +1,50 @@
+CREATE TABLE topic(
+	id NUMBER NOT NULL,
+	title VARCHAR2(50) NOT NULL,
+	description VARCHAR2(4000),
+	created DATE NOT NULL,
+	CONSTRAINT PK_TOPIC PRIMARY KEY(id)
+);
+
+INSERT INTO topic
+	(id,title,description,created)
+	VALUES
+	(SEQ_TOPIC.NEXTVAL,'ORACLE','ORACLE is ...',SYSDATE);
+
+INSERT INTO topic
+	(id,title,description,created)
+	VALUES
+	(SEQ_TOPIC.NEXTVAL,'MySQL','MySQL is ...',SYSDATE);
+
+INSERT INTO topic
+	(id,title,description,created)
+	VALUES
+	(SEQ_TOPIC.NEXTVAL,'SQL Server','SQL Server is ...',SYSDATE);
+
+CREATE SEQUENCE SEQ_TOPIC; -- SEQ_TOPIC이라는 시퀀스 생성
+
+INSERT INTO topic
+	(id,title,description,created)
+	VALUES
+	(SEQ_TOPIC.NEXTVAL,'MongoDB','MongoDB is ...',SYSDATE); -- 시퀀스.NEXTVAL 값을 자동으로 증가시킴
+
+DELETE FROM topic;
+
+commit;
+
+SELECT id,title FROM topic;
+
+SELECT SEQ_TOPIC.CURRVAL FROM topic DUAL; -- 시퀀스의 현재값을 알려준다
+
+commit;
+
+
+시퀀스
+- 유일(UNIQUE)한 값을 생성해주는 오라클 객체이다.
+- 시퀀스를 생성하면 기본키와 같이 순차적으로 증가하는 컬럼을 자동적으로 생성 할 수 있다.
+- 보통 PRIMARY KEY 값을 생성하기 위해 사용 한다.
+- 메모리에 Cache되었을 때 시퀀스값의 액세스 효율이 증가 한다.
+- 시퀀스는 테이블과는 독립적으로 저장되고 생성된다.
+
+
+
