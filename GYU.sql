@@ -75,6 +75,48 @@ SELECT id,title FROM topic WHERE id = 2;
 
 commit;
 
+CREATE TABLE author(
+id NUMBER NOT NULL,
+name VARCHAR2(20) NOT NULL,
+profile VARCHAR2(50),
+CONSTRAINT PK_AUTHOR PRIMARY KEY(id)
+);
+
+CREATE SEQUENCE SEQ_AUTHOR;
+
+INSERT INTO author (id,name,profile)VALUES(SEQ_AUTHOR.nextval,'egoing','developer');
+INSERT INTO author (id,name,profile)VALUES(SEQ_AUTHOR.nextval,'duru','DBA');
+INSERT INTO author (id,name,profile)VALUES(SEQ_AUTHOR.nextval,'taeho','data scientist');
+
+ALTER TABLE TOPIC ADD(AUTHOR_ID NUMBER);
+
+UPDATE TOPIC SET AUTHOR_ID='1' WHERE id = 1;
+UPDATE TOPIC SET AUTHOR_ID='1' WHERE id = 1;
+UPDATE TOPIC SET AUTHOR_ID='2' WHERE id = 2;
+UPDATE TOPIC SET AUTHOR_ID='3' WHERE id = 3;
+
+SELECT T.id TOPIC_ID,
+        title,
+        name 
+FROM topic T
+    LEFT JOIN author A 
+    ON T.author_id = A.id
+WHERE
+    T.id = 1
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
