@@ -67,30 +67,20 @@ ALTER SEQUENCE seq_board INCREMENT BY 1;
 <h4>오라클 시퀀스 조회(검색)</h4>
 select * from user_sequences
 
---시퀀스 검색(현재 계정의 모든 시퀀스를 보여줌)--
+<h4>--시퀀스 검색(현재 계정의 모든 시퀀스를 보여줌)--</h4>
 SELECT SEQUENCE_NAME, MIN_VALUE, MAX_VALUE, INCREMENT_BY, CYCLE_FLAG
 FROM USER_SEQUENCES;
 
---시퀀스 삭제--
+<h4>--시퀀스 삭제--</h4>
 DROP SEQUENCE seq_board;
 
---시퀀스 생성--
+<h4>--시퀀스 생성--</h4>
 CREATE SEQUENCE seq_board
 START WITH 1 -- 시작값
 INCREMENT BY 1 -- 증가값
 MAXVALUE 10000 -- 최대값
 MINVALUE 1 -- 최소값
 NOCYCLE; -- 최대값이 됐을때 다시 시작값으로 돌아갈 것인지의 순환여부 ( 순환 시킬것이라면 CYCLE; )
-
-
-
-
-
-
-
-
-
-
 
 
 
