@@ -1,5 +1,3 @@
-create user sqldb identified by 1234
-default tablespace users
-temporary tablespace temp;
+grant create synonym to scott;
 
-grant connect,resource,dba to sqldb;
+grant create public synonym to scott;

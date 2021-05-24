@@ -304,6 +304,7 @@ from usertbl;
 select rank()over(order by height desc) "키 큰 순위",username,addr,height
 from usertbl;
 
+
 --그룹 분할, 남는 인원은 다시 처음부터 채운다
 select ntile(2) over(order by height desc) "반 번호",username,addr,height from usertbl;
 select ntile(3) over(order by height desc) "반 번호",username,addr,height from usertbl;
@@ -319,10 +320,10 @@ select ntile(4) over(order by height desc) "반 번호",username,addr,height from u
 --구매 테이블 중에서 JYP라는 아이디를 가진 사람이 구매한 물건을 발송하기
 --이름,주소,연락처 등을 조인해서 검색
 
---select username,addr,mobile1,mobile2
+--select username,addr,mobile1,mobile2,prodname,amount
 --from buytbl
 --    inner join usertbl
---    on buytbl.userid=usertbl.userid;
+--    on buytbl.userid=usertbl.userid
 --where buytbl.userid='jyp';
 
 select *
@@ -523,18 +524,84 @@ part varchar2(20)
 
 create table depart(
 num varchar2(3),
-dname varchar2(10)
+dname varchar2(10),
+pos varchar2(20)
 );
 
-insert into sal values(001,'홍길동','개발부');
-insert into sal values(002,'이순신','기획부');
-insert into sal values(003,'세종대왕','총무부');
+insert into sal values('001','홍길동','개발부');
+insert into sal values('002','이순신','기획부');
+insert into sal values('003','세종대왕','총무부');
 
-insert into depart values('A01','개발부');
-insert into depart values('B01','기획부');
-insert into depart values('C01','총무부');
+insert into depart values('001','서울','개발부');
+insert into depart values('002','부산','기획부');
+insert into depart values('003','인천','총무부');
 
-select name,part from sal
-union all
-select num,dname from depart;
+delete from sal;
+delete from depart;
+
+commit;
+
+--select no,name,part from sal
+--union all
+--select no,pos,part from depart;
+
+select no,part from sal
+union
+select no,part from depart;
+
+--usertbl에서 전화기가 없는 사람을 제외하고 조회
+select username,concat(mobile,mobile2) as "전화번호" from usertbl
+where username not in(select username from usertbl where mobile1 is null);
+
+--usertbl에서 전화기가 없는사람 조회
+select username from usertbl where mobile1 is null;
+
+--Procedural Language SQL
+--set serveroutput on;
+declare
+    var1 number(5);
+begin
+    var1:=100;
+    if var1=100 then
+        dbms_output.put_line('100입니다');
+    else
+        dbms_output.put_line('100이 아닙니다');        
+    end if;
+end;
+
+declare
+    hiredate date;
+    curdate date;
+    wdays number(5);
+begin
+    select hire_date into hiredate
+    from HR.employees
+    where employee_id=200;
+    curdate:=current_date();
+    wdays:=curdate-hiredate;
+    if(wdays/365) >= 5 then
+        dbms_output.put_line('입사한지'||wdays||'일이나 지났습니다. 축하합니다!');
+    else
+        dbms_output.put_line('입사한지'||wdays||'일밖에 안되었네요. 열심히 일하세요!');
+    end if;
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

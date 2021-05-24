@@ -750,13 +750,43 @@ begin
      v_username:='무명씨';
      delete from usertbl where username=v_username;
      if sql%notfound then
-        raise zerodelete;
+          raise zerodelete;
         end if;
         exception
-        when zerodelete then
-         dbms_output.put_line(v_username||'데이터 없음. 확인 바랍니다^^');
+          when zerodelete then
+            dbms_output.put_line(v_username||'데이터 없음. 확인 바랍니다^^');
 end;
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
